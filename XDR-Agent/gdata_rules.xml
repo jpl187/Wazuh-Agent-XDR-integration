@@ -1,5 +1,4 @@
 <group name="gdata,">
-  <!-- Rule for G Data detection events -->
   <rule id="100100" level="10">
     <if_sid>571</if_sid>
     <match>detect</match>
@@ -7,7 +6,6 @@
     <group>mxdr,gdata,</group>
   </rule>
   
-  <!-- Optional: Suppress all other G Data log entries -->
   <rule id="100101" level="0">
     <if_sid>571</if_sid>
     <description>G Data Agent - Normal logs (suppressed)</description>
