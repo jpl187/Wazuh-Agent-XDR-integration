@@ -1,0 +1,12 @@
+<decoders>
+  <decoder name="gdata-base">
+    <prematch>G Data</prematch>
+  </decoder>
+
+  <decoder name="gdata-infected">
+    <prematch>G Data</prematch>
+    <regex>Infected:\s*(.+)</regex>
+    <order>malware</order>
+  </decoder>
+</decoders>
+

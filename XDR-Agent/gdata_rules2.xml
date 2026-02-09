@@ -1,0 +1,11 @@
+<group name="gdata,malware,windows">
+
+  <rule id="100500" level="12">
+    <if_matched_sid>gdata-infected</if_matched_sid>
+    <description>G Data malware detected: $(malware)</description>
+    <mitre>T1059</mitre>
+    <options>no_full_log</options>
+  </rule>
+
+</group>
+
