@@ -1,0 +1,6 @@
+<group name="gdata,malware,test">
+  <rule id="100501" level="12">
+    <match>Infected:</match>
+    <description>G Data test log reports an infected file</description>
+  </rule>
+</group>
